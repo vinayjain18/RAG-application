@@ -43,10 +43,12 @@ This project implements a Retrieval-Augmented Generation (RAG) system using Lang
 
 Start the FastAPI server:
 ```
-uvicorn app:app --reload
+python app.py
 ```
 
-The API will be available at `http://localhost:8005`.
+The API will be available at
+ - Local endpoint: `http://localhost:8005`
+ - Hosted endpoint: `http://18.138.63.225:8005`
 
 ## API Endpoints
 
