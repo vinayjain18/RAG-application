@@ -7,7 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import weaviate
 from langchain_community.embeddings import OpenAIEmbeddings
-# from langchain_community.vectorstores import Weaviate
 from langchain_weaviate.vectorstores import WeaviateVectorStore as Weaviate
 from langchain_openai import ChatOpenAI
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -80,39 +79,7 @@ def initialize_weaviate_schema():
                     data_type=wvc.config.DataType.TEXT
                 ),
             ],
-            # vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),
-            # vector_index_config=wvc.config.Configure.VectorIndex.hnsw(  # Or `flat` or `dynamic`
-            #     distance_metric=wvc.config.VectorDistances.COSINE,
-            #     quantizer=wvc.config.Configure.VectorIndex.Quantizer.bq(),
-            # ),
         )
-        # class_obj = {
-        #     "class": COLLECTION_NAME,
-        #     "vectorizer": "none",  # We'll provide our own vectors
-        #     "properties": [
-        #         {
-        #             "name": "content",
-        #             "dataType": ["text"],
-        #         },
-        #         {
-        #             "name": "filename",
-        #             "dataType": ["string"],
-        #         },
-        #         {
-        #             "name": "doc_id",
-        #             "dataType": ["string"],
-        #         },
-        #         {
-        #             "name": "chunk_id",
-        #             "dataType": ["string"],
-        #         },
-        #         {
-        #             "name": "source",
-        #             "dataType": ["string"],
-        #         },
-        #     ],
-        # }
-        # weaviate_client.collections.create(class_obj)
         print(f"Created schema for {COLLECTION_NAME}")
 
 # Initialize schema on startup
@@ -237,13 +204,15 @@ def get_documents_list():
     """Get list of all stored documents"""
     documents = weaviate_client.collections.get(COLLECTION_NAME)
     query = documents.query.fetch_objects(
-        return_properties=["filename", "doc_id"]
+        return_properties=["filename", "doc_id"],
+        limit=1000
     )
 
     unique_docs = {}
     
     for obj in query.objects:
         doc_id = obj.properties.get("doc_id")
+        print("Obj:", obj.properties)
         if doc_id and doc_id not in unique_docs:
             unique_docs[doc_id] = {
                 "doc_id": doc_id,

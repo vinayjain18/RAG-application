@@ -46,7 +46,7 @@ Start the FastAPI server:
 uvicorn app:app --reload
 ```
 
-The API will be available at `http://localhost:8000`.
+The API will be available at `http://localhost:8005`.
 
 ## API Endpoints
 
@@ -83,15 +83,16 @@ The API will be available at `http://localhost:8000`.
 ### Uploading a Document
 
 ```bash
-curl -X POST -F "file=@path/to/your/document.pdf" http://localhost:8000/upload
+curl --location 'http://localhost:8005/upload' --form 'file=@"/C:/Users/Vinay/Downloads/Untitled document.docx"'
 ```
 
 ### Querying Documents
 
 ```bash
-curl -X POST -H "Content-Type: application/json" \
-  -d '{"question": "What is the main topic?", "doc_ids": ["doc_id_here"]}' \
-  http://localhost:8000/query
+curl --location 'http://localhost:8005/query' \
+--header 'Content-Type: application/json' \
+--data '{"question": "What are his hobbies?", 
+"doc_ids": ["15d61ea2-132e-5662-86c6-3dac4762de88"]}'
 ```
 
 ## Architecture
@@ -103,3 +104,4 @@ The system follows this workflow:
 3. **Vector Storage**: Embeddings and metadata are stored in Weaviate.
 4. **Retrieval**: Relevant chunks are retrieved based on semantic similarity.
 5. **Generation**: LLM generates answers based on retrieved chunks.
+6. **Pipeline**: User can view the documents uploaded on the Weaviate.
