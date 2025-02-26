@@ -107,3 +107,29 @@ The system follows this workflow:
 4. **Retrieval**: Relevant chunks are retrieved based on semantic similarity.
 5. **Generation**: LLM generates answers based on retrieved chunks.
 6. **Pipeline**: User can view the documents uploaded on the Weaviate.
+
+
+## Automated Document Processing Pipeline
+
+### Features
+- Monitors a specified directory for new document uploads
+- Automatically processes documents as they are added 
+- Generates embeddings and indexes them in Weaviate and delete previous embedding if same file is uploaded again
+- Moves processed documents to a different directory
+- Supports the same file types as the main application (PDF, DOCX, JSON, TXT)
+
+### Setup and Configuration
+
+1. Create a `.env` file with the following additional variables (optional):
+   ```
+   WATCH_DIRECTORY=./documents_to_process
+   PROCESSED_DIRECTORY=./processed_documents
+   POLLING_INTERVAL=5
+   ```
+
+2. Run the automated pipeline:
+   ```
+   python automated_pipeline.py
+   ```
+
+3. Simply place documents in the `WATCH_DIRECTORY` folder, and they will be automatically processed.
