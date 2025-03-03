@@ -48,7 +48,6 @@ python app.py
 
 The API will be available at
  - Local endpoint: `http://localhost:8005`
- - Hosted endpoint: `http://18.138.63.225:8005`
 
 ## API Endpoints
 
